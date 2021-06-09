@@ -56,7 +56,6 @@ class Student extends REST_Controller {
 		// echo "This is GET Method";
 		$this->load->model(array("api/Stu_query"));
 		$disp=$this->Stu_query->get_data();
-
 		// print_r($disp);
 		if (count($disp) > 0) {
 			$this->response(array( //this response method is from rest_controller file
