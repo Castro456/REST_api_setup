@@ -2,14 +2,13 @@
 require APPPATH.'libraries/REST_Controller.php';
 
 class Student extends REST_Controller {
-
+		// echo "This is POST Method";
 	public function __construct() {
 		parent::__construct();
 		$this->load->model("api/Stu_query");
 	}
 
 	public function index_post() {
-		// echo "This is POST Method";
 		$data=json_decode(file_get_contents("php://input"));
 
 		$name=isset($data->name) ? $data->name : " ";
