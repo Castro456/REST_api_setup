@@ -1,8 +1,8 @@
-<?php 	// this each fn is same as $_SERVER["REQUEST_METHOD"]
+<?php 	
 require APPPATH.'libraries/REST_Controller.php';
 
 class Student extends REST_Controller {
-		// echo "This is POST Method";
+		// this each fn is same as $_SERVER["REQUEST_METHOD"]
 	public function __construct() {
 		parent::__construct();
 		$this->load->model("api/Stu_query");
@@ -29,8 +29,9 @@ class Student extends REST_Controller {
 			}
 
 			else {
-				$this->response(array("status"=> "0",
-						"message"=> "Students didn't Added"
+				$this->response(array(
+					"status"=> "0",
+					"message"=> "Students didn't Added"
 					), REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
 			}
 		}
