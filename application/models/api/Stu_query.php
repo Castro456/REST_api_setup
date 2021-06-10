@@ -10,4 +10,9 @@ class Stu_query extends CI_Model{
   public function insert_data($data=array()){
     return $this->db->insert("students", $data);
   }
+
+  public function delete_stu($stu_id){
+    $this->db->where("id", $stu_id);
+    return $this->db->delete("students");
+  }
 }

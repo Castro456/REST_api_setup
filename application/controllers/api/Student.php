@@ -64,7 +64,21 @@ class Student extends REST_Controller {
 	}
 
 	public function index_delete() {
-		echo "This is DELETE Method";
+		// echo "This is DELETE Method";
+		$data = json_decode(file_get_contents("php://input"));
+		$stu_id = $this->security->xss_clean($data->stu_id);
+		if ($this->Stu_query->delete_stu($stu_id)) {
+			$this->response(array(
+				"status" => "1",
+				"message" => "Student Deleted"
+			),REST_Controller::HTTP_OK);
+		}
+		else {
+			$this->response(array(
+				"status" => "0",
+				"message" => "Student failed to Deleted"
+			),REST_Controller::HTTP_NOT_FOUND);
+		}
 	}
 
 	public function index_get() {
