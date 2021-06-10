@@ -60,7 +60,32 @@ class Student extends REST_Controller {
 	}
 
 	public function index_put() {
-		echo "This is PUT Method";
+		// echo "This is PUT Method";
+		$data = json_decode(file_get_contents("php://input"));
+		if (isset($data->id) && isset($data->name) && isset($data->email) && isset($data->mobile)) {
+			$stu_id = $data->id;
+			$stu_info = array(
+				"name" => $data->name,
+				"email" => $data->email,
+				"mobile" => $data->mobile
+			);
+			if ($this->Stu_query->update_stu($stu_id,$stu_info)) {
+				$this->response(array(
+				"status" => "1",
+				"message" => "Student Changed"
+			),REST_Controller::HTTP_OK);
+			}else {
+				$this->response(array(
+				"status" => "0",
+				"message" => "Student didn't change"
+			),REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
+			}
+		}else {
+			$this->response(array(
+				"status" => "0",
+				"message" => "Student failed to change"
+			),REST_Controller::HTTP_NOT_FOUND);
+		}
 	}
 
 	public function index_delete() {

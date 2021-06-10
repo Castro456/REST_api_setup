@@ -15,4 +15,9 @@ class Stu_query extends CI_Model{
     $this->db->where("id", $stu_id);
     return $this->db->delete("students");
   }
+
+  public function update_stu($stu_id,$stu_info){
+    $this->db->where("id", $stu_id);
+    return $this->db->update("students", $stu_info);
+  }
 }
