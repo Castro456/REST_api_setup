@@ -7,6 +7,7 @@ class Student extends REST_Controller {
 		parent::__construct();
 		$this->load->model("api/Stu_query");
 		$this->load->library("form_validation");
+		$this->load->helper("security");
 	}
 
 	public function index_post() {
@@ -14,9 +15,9 @@ class Student extends REST_Controller {
 		// $name=isset($data->name) ? $data->name : " ";         (*this is for post body methos)
 		// $email=isset($data->email) ? $data->email : " ";
 		// $mobile=isset($data->mobile) ? $data->mobile : " ";
-		$name= $this->input->post("name");
-		$email= $this->input->post("email");
-		$mobile= $this->input->post("mobile");
+		$name= $this->security->xss_clean($this->input->post("name"));
+		$email= $this->security->xss_clean($this->input->post("email"));
+		$mobile= $this->security->xss_clean($this->input->post("mobile"));
 
 		$this->form_validation->set_rules("name", "Name" , "required");
 		$this->form_validation->set_rules("email", "Email" , "required|valid_email");
