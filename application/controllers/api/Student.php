@@ -6,41 +6,55 @@ class Student extends REST_Controller {
 	public function __construct() {
 		parent::__construct();
 		$this->load->model("api/Stu_query");
+		$this->load->library("form_validation");
 	}
 
 	public function index_post() {
-		$data=json_decode(file_get_contents("php://input"));
+		// $data=json_decode(file_get_contents("php://input"));
+		// $name=isset($data->name) ? $data->name : " ";         (*this is for post body methos)
+		// $email=isset($data->email) ? $data->email : " ";
+		// $mobile=isset($data->mobile) ? $data->mobile : " ";
+		$name= $this->input->post("name");
+		$email= $this->input->post("email");
+		$mobile= $this->input->post("mobile");
 
-		$name=isset($data->name) ? $data->name : " ";
-		$email=isset($data->email) ? $data->email : " ";
-		$mobile=isset($data->mobile) ? $data->mobile : " ";
+		$this->form_validation->set_rules("name", "Name" , "required");
+		$this->form_validation->set_rules("email", "Email" , "required|valid_email");
+		$this->form_validation->set_rules("mobile", "Mobile" , "required");
 
-		if ( !empty($name) && !empty($email) && !empty($mobile)) {
-			$student=array(
-				"name"=> $name,
-				"email"=> $email,
-				"mobile"=> $mobile);
-
-			if ($this->Stu_query->insert_data($student)) {
-				$this->response(array( //this response method is from rest_controller file
-						"status"=> "1",
-						"message"=> "Students Added"
-					), REST_Controller::HTTP_OK);
-			}
-
-			else {
-				$this->response(array(
+		if($this->form_validation->run() === FALSE){
+			$this->response(array( 
 					"status"=> "0",
-					"message"=> "Students didn't Added"
-					), REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
-			}
-		}
-
-		else {
-			$this->response(array( //this response method is from rest_controller file
-					"status"=> "0",
-					"message"=> "All Fields are needed"
+					"message"=> "All fields are required"
 				), REST_Controller::HTTP_NOT_FOUND);
+		}
+		else {
+				if ( !empty($name) && !empty($email) && !empty($mobile)) {
+					$student=array(
+						"name"=> $name,
+						"email"=> $email,
+						"mobile"=> $mobile);
+
+					if ($this->Stu_query->insert_data($student)) {
+						$this->response(array( //this response method is from rest_controller file
+								"status"=> "1",
+								"message"=> "Students Added"
+							), REST_Controller::HTTP_OK);
+					}
+
+					else {
+						$this->response(array(
+							"status"=> "0",
+							"message"=> "Students didn't Added"
+							), REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
+					}
+				}
+			  else {
+					$this->response(array( //this response method is from rest_controller file
+							"status"=> "0",
+							"message"=> "All Fields are needed"
+						), REST_Controller::HTTP_NOT_FOUND);
+				}
 		}
 	}
 
